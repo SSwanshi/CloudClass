@@ -10,20 +10,21 @@ import { VideoPlayer } from "./_components/video-player";
 import { CourseEnrollButton } from "./_components/course-enroll-button";
 import { CourseProgressButton } from "./_components/course-progress-button";
 
-interface ChapterIdPageProps {
+// Explicitly annotate the component type with Next.js metadata
+export const dynamic = "force-dynamic";
+
+interface PageParams {
   params: {
     courseId: string;
     chapterId: string;
   };
 }
 
-const ChapterIdPage = async ({ params }: ChapterIdPageProps) => {
+export default async function ChapterIdPage({ params }: PageParams) {
   const { userId } = await auth();
   const { courseId, chapterId } = params;
 
-  if (!userId) {
-    return redirect("/");
-  }
+  if (!userId) return redirect("/");
 
   const {
     chapter,
@@ -33,15 +34,9 @@ const ChapterIdPage = async ({ params }: ChapterIdPageProps) => {
     nextChapter,
     userProgress,
     purchase,
-  } = await getChapter({
-    userId,
-    chapterId,
-    courseId,
-  });
+  } = await getChapter({ userId, chapterId, courseId });
 
-  if (!chapter || !course) {
-    return redirect("/");
-  }
+  if (!chapter || !course) return redirect("/");
 
   const isLocked = !chapter.isFree && !purchase;
   const completeOnEnd = !!purchase && !userProgress?.isCompleted;
@@ -49,10 +44,7 @@ const ChapterIdPage = async ({ params }: ChapterIdPageProps) => {
   return (
     <div>
       {userProgress?.isCompleted && (
-        <Banner
-          variant="success"
-          label="You already completed this chapter."
-        />
+        <Banner variant="success" label="You already completed this chapter." />
       )}
       {isLocked && (
         <Banner
@@ -74,9 +66,7 @@ const ChapterIdPage = async ({ params }: ChapterIdPageProps) => {
         </div>
         <div>
           <div className="p-4 flex flex-col md:flex-row items-center justify-between">
-            <h2 className="text-2xl font-semibold mb-2">
-              {chapter.title}
-            </h2>
+            <h2 className="text-2xl font-semibold mb-2">{chapter.title}</h2>
             {purchase ? (
               <CourseProgressButton
                 chapterId={chapterId}
@@ -85,21 +75,15 @@ const ChapterIdPage = async ({ params }: ChapterIdPageProps) => {
                 isCompleted={!!userProgress?.isCompleted}
               />
             ) : (
-              <CourseEnrollButton
-                courseId={courseId}
-                price={course.price!}
-              />
+              <CourseEnrollButton courseId={courseId} price={course.price!} />
             )}
           </div>
           <Separator />
-          <div className="text-xl font-semibold my-4">
-            Course Description:
-          </div>
+          <div className="text-xl font-semibold my-4">Course Description :</div>
           <div>
             <Preview value={chapter.description!} />
           </div>
-
-          {!!attachments && attachments.length > 0 && (
+          {!!attachments?.length && (
             <>
               <Separator />
               <div className="p-4">
@@ -107,20 +91,17 @@ const ChapterIdPage = async ({ params }: ChapterIdPageProps) => {
                   <a
                     href={attachment.url}
                     target="_blank"
-                    rel="noopener noreferrer"
                     key={attachment.id}
-                    className="flex items-center p-3 w-full bg-sky-200 dark:bg-sky-800 text-sky-700 dark:text-sky-300 hover:underline"
+                    className="flex items-center p3 w-full bg-sky-200 dark:bg-sky-800 text-sky-700 dark:text-sky-300 hover:underline"
                   >
-                    <File className="mr-2" />
+                    <File />
                     <p className="line-clamp-1">{attachment.name}</p>
                   </a>
                 ))}
               </div>
             </>
           )}
-
           <Separator />
-
           {!purchase && (
             <div className="text-red-500 my-8 text-center">
               Purchase the course to see the attachments provided by the course instructor.
@@ -130,6 +111,4 @@ const ChapterIdPage = async ({ params }: ChapterIdPageProps) => {
       </div>
     </div>
   );
-};
-
-export default ChapterIdPage;
+}
