@@ -38,7 +38,7 @@ export const ChaptersForm = ({
     courseId,
 }: ChaptersFormProps) => {
     const [isCreating, setIsCreating] = useState(false);
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+     
     const [isUpdating, setIsUpdating] = useState(false);
     const toggleCreating = () => setIsCreating((current) => !current);
     const router = useRouter();
