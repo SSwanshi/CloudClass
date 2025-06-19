@@ -3,9 +3,11 @@ import { redirect } from "next/navigation";
 
 const CourseIdPage = async ({
     params
-}: { params: { courseId: string; } }) => {
+}: { 
+    params: Promise<{ courseId: string; }> 
+}) => {
 
-    const {courseId} = await params;
+    const { courseId } = await params;
 
     const course = await db.course.findUnique({
         where: {
@@ -26,6 +28,7 @@ const CourseIdPage = async ({
     if (!course) {
         return redirect("/");
     }
+    
     return redirect(`/courses/${course.id}/chapters/${course.chapters[0].id}`);
 
 }
