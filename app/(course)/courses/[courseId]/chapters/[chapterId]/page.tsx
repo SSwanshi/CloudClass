@@ -10,25 +10,20 @@ import { VideoPlayer } from "./_components/video-player";
 import { CourseEnrollButton } from "./_components/course-enroll-button";
 import { CourseProgressButton } from "./_components/course-progress-button";
 
-// Type for the outer function
-type Props = {
+interface ChapterIdPageProps {
   params: {
     courseId: string;
     chapterId: string;
   };
-};
-
-// Outer wrapper ensures proper typing and avoids Promise confusion
-export default function ChapterIdPage({ params }: Props) {
-  return <ChapterIdPageImpl params={params} />;
 }
 
-// Async logic inside a separate component to avoid inference issues
-async function ChapterIdPageImpl({ params }: Props) {
+const ChapterIdPage = async ({ params }: ChapterIdPageProps) => {
   const { userId } = await auth();
   const { courseId, chapterId } = params;
 
-  if (!userId) return redirect("/");
+  if (!userId) {
+    return redirect("/");
+  }
 
   const {
     chapter,
@@ -38,9 +33,15 @@ async function ChapterIdPageImpl({ params }: Props) {
     nextChapter,
     userProgress,
     purchase,
-  } = await getChapter({ userId, chapterId, courseId });
+  } = await getChapter({
+    userId,
+    chapterId,
+    courseId,
+  });
 
-  if (!chapter || !course) return redirect("/");
+  if (!chapter || !course) {
+    return redirect("/");
+  }
 
   const isLocked = !chapter.isFree && !purchase;
   const completeOnEnd = !!purchase && !userProgress?.isCompleted;
@@ -92,7 +93,7 @@ async function ChapterIdPageImpl({ params }: Props) {
           </div>
           <Separator />
           <div className="text-xl font-semibold my-4">
-            Course Description :
+            Course Description:
           </div>
           <div>
             <Preview value={chapter.description!} />
@@ -106,10 +107,11 @@ async function ChapterIdPageImpl({ params }: Props) {
                   <a
                     href={attachment.url}
                     target="_blank"
+                    rel="noopener noreferrer"
                     key={attachment.id}
-                    className="flex items-center p3 w-full bg-sky-200 dark:bg-sky-800 text-sky-700 dark:text-sky-300 hover:underline"
+                    className="flex items-center p-3 w-full bg-sky-200 dark:bg-sky-800 text-sky-700 dark:text-sky-300 hover:underline"
                   >
-                    <File />
+                    <File className="mr-2" />
                     <p className="line-clamp-1">{attachment.name}</p>
                   </a>
                 ))}
@@ -128,4 +130,6 @@ async function ChapterIdPageImpl({ params }: Props) {
       </div>
     </div>
   );
-}
+};
+
+export default ChapterIdPage;
