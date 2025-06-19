@@ -11,30 +11,20 @@ const compat = new FlatCompat({
 });
 
 const eslintConfig = [
-  // ✅ Core ESLint + TypeScript support via Next.js presets
   ...compat.extends("next/core-web-vitals", "next/typescript"),
 
-  // ✅ Custom rule overrides
   {
     rules: {
-      // Allow expressions like `x && doSomething` temporarily
+      // 🔇 Specifically mute the rule causing first batch of blocking errors
       "@typescript-eslint/no-unused-expressions": "off",
 
-      // Downgrade aliasing of `this` to a warning
-      "@typescript-eslint/no-this-alias": "warn",
-
-      // Allow unused variables/args if prefixed with _
+      // 🟡 Optional: soften other rules to avoid further blocks (adjust as needed)
       "@typescript-eslint/no-unused-vars": [
         "warn",
-        {
-          varsIgnorePattern: "^_",
-          argsIgnorePattern: "^_",
-          caughtErrorsIgnorePattern: "^_",
-        },
+        { argsIgnorePattern: "^_", varsIgnorePattern: "^_" }
       ],
-
-      // Downgrade require() usage so it doesn't block you
       "@typescript-eslint/no-require-imports": "warn",
+      "@typescript-eslint/no-this-alias": "warn"
     },
   },
 ];
