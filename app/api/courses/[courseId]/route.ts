@@ -10,7 +10,7 @@ const mux = new Mux({
 
 export async function DELETE(
     req:Request,
-    { params }: {params: {courseId:string}}
+    { params }: {params: Promise<{courseId:string}>}
 ) {
     try {
         const {userId} = await auth();

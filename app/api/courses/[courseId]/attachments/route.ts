@@ -4,18 +4,20 @@ import { db } from "@/lib/db";
 
 export async function POST(
   req: Request,
-  { params }: { params: { courseId: string } }
+  { params }: { params: Promise<{ courseId: string }> }
 ) {
   try {
     // First await the auth check
     const { userId } = await auth();
+    
+    
 
     if (!userId) {
       return new NextResponse("Unauthorized", { status: 401 });
     }
 
     // Proper way to handle params in Next.js 13+
-    const courseId = params.courseId;
+    const courseId = (await params).courseId;
 
     const courseOwner = await db.course.findUnique({
       where: {

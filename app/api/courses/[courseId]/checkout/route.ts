@@ -6,7 +6,7 @@ import { stripe } from "@/lib/stripe";
 
 export async function POST(
     req: Request,
-    { params }: { params: { courseId: string } }
+    { params }: { params: Promise<{ courseId: string }> }
 ) {
     try {
 
