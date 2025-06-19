@@ -12,14 +12,15 @@ const CourseLayout = async ({
   params,
 }: {
   children: React.ReactNode;
-  params: { courseId: string };
+  params: Promise<{ courseId: string }>;
 }) => {
   const { userId } = await auth();
   if (!userId) {
     return redirect("/");
   }
 
-  const { courseId } = params;
+  // Await the params Promise to get the actual values
+  const { courseId } = await params;
 
   const course = await db.course.findUnique({
     where: {
