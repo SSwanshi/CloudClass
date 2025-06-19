@@ -1,4 +1,4 @@
-import { auth } from "@clerk/nextjs/server";;
+import { auth } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
 import { File } from "lucide-react";
 
@@ -11,12 +11,12 @@ import { CourseEnrollButton } from "./_components/course-enroll-button";
 import { CourseProgressButton } from "./_components/course-progress-button";
 
 const ChapterIdPage = async ({
-    params
+    params,
 }: {
-    params: { courseId: string; chapterId: string }
+    params: { courseId: string; chapterId: string };
 }) => {
     const { userId } = await auth();
-    const {courseId, chapterId} = await params;
+    const { courseId, chapterId } = params; // ✅ Removed await here
 
     if (!userId) {
         return redirect("/");
@@ -32,14 +32,13 @@ const ChapterIdPage = async ({
         purchase,
     } = await getChapter({
         userId,
-        chapterId: chapterId,
-        courseId: courseId,
+        chapterId,
+        courseId,
     });
 
     if (!chapter || !course) {
-        return redirect("/")
+        return redirect("/");
     }
-
 
     const isLocked = !chapter.isFree && !purchase;
     const completeOnEnd = !!purchase && !userProgress?.isCompleted;
@@ -76,13 +75,12 @@ const ChapterIdPage = async ({
                             {chapter.title}
                         </h2>
                         {purchase ? (
-                            
-                              <CourseProgressButton
+                            <CourseProgressButton
                                 chapterId={chapterId}
                                 courseId={courseId}
                                 nextChapterId={nextChapter?.id}
                                 isCompleted={!!userProgress?.isCompleted}
-                              />
+                            />
                         ) : (
                             <CourseEnrollButton
                                 courseId={courseId}
@@ -91,49 +89,43 @@ const ChapterIdPage = async ({
                         )}
                     </div>
                     <Separator />
-
                     <div className="text-xl font-semibold my-4">
-                            Course Description :
-                        </div>
+                        Course Description :
+                    </div>
                     <div>
                         <Preview value={chapter.description!} />
                     </div>
+
                     {!!attachments && attachments.length > 0 && (
                         <>
                             <Separator />
                             <div className="p-4">
-                                {attachments && attachments.length > 0 && (
-                                    <>
-                                        <Separator />
-                                        <div className="p-4">
-                                            {attachments.map((attachment) => (
-                                                <a
-                                                    href={attachment.url}
-                                                    target="_blank"
-                                                    key={attachment.id}
-                                                    className="flex items-center p3 w-full bg-sky-200 dark:bg-sky-800 text-sky-700 dark:text-sky-300 hover:underline"
-                                                >
-                                                    <File />
-                                                    <p className="line-clamp-1">{attachment.name}</p>
-                                                </a>
-                                            ))}
-                                        </div>
-                                    </>
-                                )}
+                                {attachments.map((attachment) => (
+                                    <a
+                                        href={attachment.url}
+                                        target="_blank"
+                                        key={attachment.id}
+                                        className="flex items-center p3 w-full bg-sky-200 dark:bg-sky-800 text-sky-700 dark:text-sky-300 hover:underline"
+                                    >
+                                        <File />
+                                        <p className="line-clamp-1">{attachment.name}</p>
+                                    </a>
+                                ))}
                             </div>
                         </>
                     )}
 
-                <Separator />
+                    <Separator />
 
+                    {!purchase && (
+                        <div className="text-red-500 my-8 text-center">
+                            Purchase the course to see the attachments provided by the course instructor.
+                        </div>
+                    )}
                 </div>
-                {!purchase && (
-                            <div className="text-red-500 my-8 text-center">Purchase the course to see the attachments provided by the course instructor.</div>
-                            
-                        ) }
             </div>
         </div>
     );
-}
+};
 
 export default ChapterIdPage;
