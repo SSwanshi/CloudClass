@@ -20,6 +20,7 @@ interface PageParams {
   };
 }
 
+// Ensure the function is typed correctly
 export default async function ChapterIdPage({ params }: PageParams) {
   const { userId } = await auth();
   const { courseId, chapterId } = params;
