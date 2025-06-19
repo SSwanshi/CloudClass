@@ -12,10 +12,10 @@ import { Banner } from "@/components/banner";
 import { ChapterActions } from "./_components/chapter-action";
 
 interface ChapterIdPageProps {
-  params: {
+  params: Promise<{
     courseId: string;
     chapterId: string;
-  };
+  }>;
 }
 
 const ChapterIdPage = async ({ params }: ChapterIdPageProps) => {
