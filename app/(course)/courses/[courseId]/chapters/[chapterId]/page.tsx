@@ -10,20 +10,25 @@ import { VideoPlayer } from "./_components/video-player";
 import { CourseEnrollButton } from "./_components/course-enroll-button";
 import { CourseProgressButton } from "./_components/course-progress-button";
 
-interface ChapterIdPageProps {
+// Type for the outer function
+type Props = {
   params: {
     courseId: string;
     chapterId: string;
   };
+};
+
+// Outer wrapper ensures proper typing and avoids Promise confusion
+export default function ChapterIdPage({ params }: Props) {
+  return <ChapterIdPageImpl params={params} />;
 }
 
-const ChapterIdPage = async ({ params }: ChapterIdPageProps) => {
+// Async logic inside a separate component to avoid inference issues
+async function ChapterIdPageImpl({ params }: Props) {
   const { userId } = await auth();
   const { courseId, chapterId } = params;
 
-  if (!userId) {
-    return redirect("/");
-  }
+  if (!userId) return redirect("/");
 
   const {
     chapter,
@@ -33,15 +38,9 @@ const ChapterIdPage = async ({ params }: ChapterIdPageProps) => {
     nextChapter,
     userProgress,
     purchase,
-  } = await getChapter({
-    userId,
-    chapterId,
-    courseId,
-  });
+  } = await getChapter({ userId, chapterId, courseId });
 
-  if (!chapter || !course) {
-    return redirect("/");
-  }
+  if (!chapter || !course) return redirect("/");
 
   const isLocked = !chapter.isFree && !purchase;
   const completeOnEnd = !!purchase && !userProgress?.isCompleted;
@@ -129,6 +128,4 @@ const ChapterIdPage = async ({ params }: ChapterIdPageProps) => {
       </div>
     </div>
   );
-};
-
-export default ChapterIdPage;
+}
