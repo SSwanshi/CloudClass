@@ -1,36 +1,43 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+🌩️ Cloud Class – Full-Stack LMS Web Application
+Cloud Class is a modern, full-featured Learning Management System (LMS) built with the latest full-stack technologies. Designed for both learners and instructors, it provides a complete platform to browse, purchase, and manage online courses.
 
-## Getting Started
+🔑 Key Features
+🧑‍🎓 Browse & Filter Courses
+💳 Purchase Courses using Stripe (test mode)
+✅ Mark Chapters as Completed/Uncompleted
+📊 Progress Calculation per Course
+🖥️ Student Dashboard
+🎓 Teacher Mode
+➕ Create New Courses & Chapters
+🔀 Reorder Chapters via Drag & Drop
+📁 Upload Thumbnails, Videos & Attachments (via UploadThing)
+🎥 Video Processing & Streaming with Mux
+🎞️ HLS Video Playback using Mux Player
+📝 Rich Text Editor for Chapter Descriptions
+🔐 Authentication using Clerk
+🔄 ORM with Prisma
+🗄️ MySQL Database (hosted on Railway)
+🛠️ Tech Stack
 
-First, run the development server:
+Frontend: Next.js, React, TypeScript, Tailwind CSS
+Backend: Prisma ORM, MySQL (Railway), Stripe, Mux, UploadThing
+Auth: Clerk
+Video: Mux for video processing + HLS player
+Storage: UploadThing for media uploads
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+💳 Stripe Test Mode
+To test course purchases, use the following Stripe test card at checkout:
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Card Number: 4242 4242 4242 4242  
+Expiry Date: Any future date  
+CVC: Any 3 digits  
+ZIP: Any 5-digit number
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+🚀 Live Demo
+👉 https://cloud-class-theta.vercel.app/
+📦 GitHub Repository : https://github.com/SSwanshi/CloudClass.git
 
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+📬 Contact
+Feel free to connect with me on LinkedIn [https://www.linkedin.com/in/sarvjeet-swanshi-6b6b0b296] 
+or reach out for feedback, ideas, or collaboration opportunities!
