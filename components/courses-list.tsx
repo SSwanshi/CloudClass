@@ -37,7 +37,7 @@ export const CoursesList = ({
       </div>
       {uniqueItems.length === 0 && (
         <div className="text-center text-sm text-muted-foreground mt-10">
-          No such course found. Go to Browse tab to explore courses.
+          No course found. Go to Browse tab to explore courses.
         </div>
       )}
     </div>
